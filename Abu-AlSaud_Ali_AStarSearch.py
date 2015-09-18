@@ -62,7 +62,7 @@ with open('World2.txt') as world2:
 def AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedManhattan):
 	#If statement to indicate whether we finished or not
 	if currentRow == 8 and currentColomn == 10:
-		print ("Nodes visited = {}"). format(visitedManhattan)
+		print ("Nodes Evaluated = {}"). format(visitedManhattan)
 		return
 	else:
 		#First, we will calculate the cost of every possible move from the current position:
@@ -110,7 +110,7 @@ def AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedM
 			costToUpRight = 999			
 		
 		#This if statement just to make sure that we don't go out of the maze border	
-		if currentRow + 1 < 9 and currentColomn - 1 < 11:
+		if currentRow + 1 < 9 and currentColomn - 1 < 11 and currentColomn - 1 > 0:
 			if maze.location(currentRow + 1, currentColomn - 1) == 2:	
 				costToUpLeft = 999
 				visitedManhattan = visitedManhattan + 1
@@ -122,31 +122,52 @@ def AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedM
 				visitedManhattan = visitedManhattan + 1
 		else:
 			costToUpLeft = 999
+		
+		#This if statement just to make sure that we don't go out of the maze border	
+		if currentRow - 1 < 9 and currentRow - 1 > 0 and currentColomn + 1 < 11:
+			if maze.location(currentRow - 1, currentColomn + 1) == 2:	
+				costToDownRight = 999
+				visitedManhattan = visitedManhattan + 1
+			elif maze.location(currentRow - 1, currentColomn + 1) == 1:
+				costToDownRight = 24 + ManhattanDistance(currentRow - 1, currentColomn + 1)
+				visitedManhattan = visitedManhattan + 1
+			elif maze.location(currentRow - 1, currentColomn + 1) == 0:
+				costToDownRight = 14 + ManhattanDistance(currentRow - 1, currentColomn + 1)
+				visitedManhattan = visitedManhattan + 1
+		else:
+			costToDownRight = 999
 			
 		#Now we will figure out the cheapest cost of every move:
-		if costToUp <= costToRight and costToUp <= costToUpRight and costToUp <= costToUpLeft:
+		if costToUp <= costToRight and costToUp <= costToUpRight and costToUp <= costToUpLeft and costToUp <= costToDownRight:
 			currentRow = currentRow + 1
 			pathCost = pathCost + costToUp - ManhattanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedManhattan)
-		elif costToRight <= costToUp and costToRight <= costToUpRight and costToRight <= costToUpLeft:
+		elif costToRight <= costToUp and costToRight <= costToUpRight and costToRight <= costToUpLeft and costToRight <= costToDownRight:
 			currentColomn = currentColomn + 1
 			pathCost = pathCost + costToRight - ManhattanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedManhattan)
-		elif costToUpRight <= costToRight and costToUpRight <= costToUp and costToUpRight <= costToUpLeft:
+		elif costToUpRight <= costToRight and costToUpRight <= costToUp and costToUpRight <= costToUpLeft and costToUpRight <= costToDownRight:
 			currentRow = currentRow + 1
 			currentColomn = currentColomn + 1
 			pathCost = pathCost + costToUpRight - ManhattanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedManhattan)
-		elif costToUpLeft <= costToRight and costToUpLeft <= costToUp and costToUpLeft <= costToUpRight:
+		elif costToUpLeft <= costToRight and costToUpLeft <= costToUp and costToUpLeft <= costToUpRight and costToUpLeft <= costToDownRight:
 			currentRow = currentRow + 1
 			currentColomn = currentColomn - 1
 			pathCost = pathCost + costToUpLeft - ManhattanDistance(currentRow, currentColomn)
+			print("Move to ({}, {})"). format(currentRow, currentColomn)
+			print("Path Cost = {}"). format(pathCost)
+			AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedManhattan)
+		elif costToDownRight <= costToRight and costToDownRight <= costToUp and costToDownRight <= costToUpRight and costToDownRight <= costToUpLeft:
+			currentRow = currentRow - 1
+			currentColomn = currentColomn + 1
+			pathCost = pathCost + costToDownRight - ManhattanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedManhattan)
@@ -155,7 +176,7 @@ def AstarEvaluationManhattan(currentRow, currentColomn, pathCost, maze, visitedM
 def AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedEuclidean):
 	#If statement to indicate whether we finished or not
 	if currentRow == 8 and currentColomn == 10:
-		print("Nodes visited = {}"). format(visitedEuclidean)
+		print("Nodes Evaluated = {}"). format(visitedEuclidean)
 		return
 	else:
 		#First, we will calculate the cost of every possible move from the current position:
@@ -203,7 +224,7 @@ def AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedE
 			costToUpRight = 999			
 		
 		#This if statement just to make sure that we don't go out of the maze border	
-		if currentRow + 1 < 9 and currentColomn - 1 < 11:
+		if currentRow + 1 < 9 and currentColomn - 1 < 11 and currentColomn - 1 > 0:
 			if maze.location(currentRow + 1, currentColomn - 1) == 2:	
 				costToUpLeft = 999
 				visitedEuclidean = visitedEuclidean + 1
@@ -215,34 +236,63 @@ def AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedE
 				visitedEuclidean = visitedEuclidean + 1
 		else:
 			costToUpLeft = 999
-			
+
+		#This if statement just to make sure that we don't go out of the maze border	
+		if currentRow - 1 < 9 and currentColomn + 1 < 11 and currentRow - 1 > 0:
+			if maze.location(currentRow - 1, currentColomn + 1) == 2:	
+				costToDownRight = 999
+				visitedEuclidean = visitedEuclidean + 1
+			elif maze.location(currentRow - 1, currentColomn + 1) == 1:
+				costToDownRight = 24 + EuclideanDistance(currentRow - 1, currentColomn + 1)
+				visitedEuclidean = visitedEuclidean + 1
+			elif maze.location(currentRow - 1, currentColomn + 1) == 0:
+				costToDownRight = 14 + EuclideanDistance(currentRow - 1, currentColomn + 1)
+				visitedEuclidean = visitedEuclidean + 1
+		else:
+			costToDownRight = 999
+		
+		print("Cost to Up: {}"). format(costToUp)
+		print("Cost to Right: {}"). format(costToRight)
+		print("Cost to UpRight: {}"). format(costToUpRight)
+		print("Cost to UpLeft: {}"). format(costToUpLeft)
+		print("Cost to DownRight: {}"). format(costToDownRight)
+		
+	
 		#Now we will figure out the cheapest cost of every move:
-		if costToUp <= costToRight and costToUp <= costToUpRight and costToUp <= costToUpLeft:
+		if costToUp <= costToRight and costToUp <= costToUpRight and costToUp <= costToUpLeft and costToUp <= costToDownRight:
 			currentRow = currentRow + 1
 			pathCost = pathCost + costToUp - EuclideanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedEuclidean)
-		elif costToRight <= costToUp and costToRight <= costToUpRight and costToRight <= costToUpLeft:
+		elif costToRight <= costToUp and costToRight <= costToUpRight and costToRight <= costToUpLeft and costToRight <= costToDownRight:
 			currentColomn = currentColomn + 1
 			pathCost = pathCost + costToRight - EuclideanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedEuclidean)
-		elif costToUpRight <= costToRight and costToUpRight <= costToUp and costToUpRight <= costToUpLeft:
+		elif costToUpRight <= costToRight and costToUpRight <= costToUp and costToUpRight <= costToUpLeft and costToUpRight <= costToDownRight:
 			currentRow = currentRow + 1
 			currentColomn = currentColomn + 1
 			pathCost = pathCost + costToUpRight - EuclideanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedEuclidean)
-		elif costToUpLeft <= costToRight and costToUpLeft <= costToUp and costToUpLeft <= costToUpRight:
+		elif costToUpLeft <= costToRight and costToUpLeft <= costToUp and costToUpLeft <= costToUpRight and costToUpLeft <= costToDownRight:
 			currentRow = currentRow + 1
 			currentColomn = currentColomn - 1
 			pathCost = pathCost + costToUpLeft - EuclideanDistance(currentRow, currentColomn)
 			print("Move to ({}, {})"). format(currentRow, currentColomn)
 			print("Path Cost = {}"). format(pathCost)
 			AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedEuclidean)
+		elif costToDownRight <= costToRight and costToDownRight <= costToUp and costToDownRight <= costToUpRight and costToDownRight <= costToUpLeft:
+			currentRow = currentRow - 1
+			currentColomn = currentColomn + 1
+			pathCost = pathCost + costToDownRight - EuclideanDistance(currentRow, currentColomn)
+			print("Move to ({}, {})"). format(currentRow, currentColomn)
+			print("Path Cost = {}"). format(pathCost)
+			AstarEvaluationEuclidean(currentRow, currentColomn, pathCost, maze, visitedEuclidean)
+
 
 currentRow = 1
 currentColomn = 1
@@ -262,7 +312,7 @@ if mazeNumber == 1:
 		print("Sorry the number that you entered is out of range")
 elif mazeNumber == 2:
 	if HFunction == 1:
-		AstarEvaluationManhattan(currentRow, currentColomn, pathCost, Maze1, visitedManhattan)
+		AstarEvaluationManhattan(currentRow, currentColomn, pathCost, Maze2, visitedManhattan)
 	elif HFunction == 2:
 		AstarEvaluationManhattan(currentRow, currentColomn, pathCost, Maze2, visitedEuclidean)
 	else:
